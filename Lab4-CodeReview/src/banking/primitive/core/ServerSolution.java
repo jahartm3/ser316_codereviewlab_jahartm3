@@ -14,6 +14,7 @@ class ServerSolution implements AccountServer {
 
 	Map<String,Account> accountMap = null;
 
+	//ServerSolution - creates HashMap to store and read from account file
 	public ServerSolution() {
 		accountMap = new HashMap<String,Account>();
 		File file = new File(fileName);
@@ -22,7 +23,7 @@ class ServerSolution implements AccountServer {
 			if (file.exists()) {
 				System.out.println("Reading from file " + fileName + "...");
 				in = new ObjectInputStream(new FileInputStream(file));
-
+				// Reading the object file 
 				Integer sizeI = (Integer) in.readObject();
 				int size = sizeI.intValue();
 				for (int i=0; i < size; i++) {
@@ -31,6 +32,7 @@ class ServerSolution implements AccountServer {
 						accountMap.put(acc.getName(), acc);
 				}
 			}
+			// Catch invalid input file
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
@@ -44,12 +46,12 @@ class ServerSolution implements AccountServer {
 			}
 		}
 	}
-	
+	//Creating the list of accounts
 	private boolean newAccountFactory(String type, String name, float balance)
 		throws IllegalArgumentException {
 		
 		if (accountMap.get(name) != null) return false;
-		
+		// Determine between savings and checking.
 		Account acc;
 		if ("Checking".equals(type)) {
 			acc = new Checking(name, balance);
@@ -67,15 +69,15 @@ class ServerSolution implements AccountServer {
 		}
 		return true;
 	}
-
+	//Create a new account and run it through factory
 	public boolean newAccount(String type, String name, float balance) 
 		throws IllegalArgumentException {
-		
+		//Balance input is cannot be negative until after. 
 		if (balance < 0.0f) throw new IllegalArgumentException("New account may not be started with a negative balance");
 		
 		return newAccountFactory(type, name, balance);
 	}
-	
+	// Close an account 
 	public boolean closeAccount(String name) {
 		Account acc = accountMap.get(name);
 		if (acc == null) {
@@ -84,15 +86,15 @@ class ServerSolution implements AccountServer {
 		acc.setState(State.CLOSED);
 		return true;
 	}
-
+	//Return the account name. 
 	public Account getAccount(String name) {
 		return accountMap.get(name);
 	}
-
+	//List all the accounts. 
 	public List<Account> getAllAccounts() {
 		return new ArrayList<Account>(accountMap.values());
 	}
-
+	//List all active accounts 
 	public List<Account> getActiveAccounts() {
 		List<Account> result = new ArrayList<Account>();
 
@@ -103,7 +105,7 @@ class ServerSolution implements AccountServer {
 		}
 		return result;
 	}
-	
+	//Saves accountMap to file, can be passed as arg when starting the app
 	public void saveAccounts() throws IOException {
 		ObjectOutputStream out = null; 
 		try {
