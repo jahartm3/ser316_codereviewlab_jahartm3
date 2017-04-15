@@ -1,5 +1,26 @@
+/*
+  File: Savings.java
+  Author: Alexandra Mehlhase
+  Date: 04/07/17
+  
+  Description: Part of the banking application is a savings account.
+  			   This file implements the functions and methods that 
+  			   are used when working with a savings type account. 
+*/
+
+
+
 package banking.primitive.core;
 
+
+/**
+Class: Savings
+
+Description: Savings extends the Account class. this is where
+			 the main functions of the account are implemented. 
+			 These include: deposit, withdraw, getType, and a 
+			 toString method for display. 
+*/
 public class Savings extends Account {
 	private static final long serialVersionUID = 111L;
 	private int numWithdraws = 0;
